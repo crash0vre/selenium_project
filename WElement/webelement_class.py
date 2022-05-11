@@ -2,20 +2,46 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-
-driver = webdriver.Chrome()
-#driver.maximize_window()
-driver.implicitly_wait(20)
+def initialize_driver():
+    driver = webdriver.Chrome()
+    #driver.maximize_window()
+    driver.implicitly_wait(20)
+    #driver.find_element(By.XPATH,"//input[@id='search_query_top']")
+    return driver
 #finding  the multiple elements
-driver.get('http://automationpractice.com')
-product_names = driver.find_elements(By.XPATH, "//span[normalize-space()='Add to cart']")
-#print(cart_buttons)
-time.sleep(3)
-for cart_button in product_names:
-    print('cart_button text: ',cart_button.text)
-    print('cart_button size: ',cart_button.size)
-    print('cart_button name: ',cart_button.tag_name)
-print('Number of elements ', len(product_names))
+def webelement_properties(driver):
+    driver.get('http://automationpractice.com')
+    product_names = driver.find_elements(By.XPATH, "//span[normalize-space()='Add to cart']")
+    #print(cart_buttons)
+    time.sleep(3)
+    print("Using the web element properties for each element")
+    for cart_button in product_names:
+        print('cart_button text: ',cart_button.text)
+        print('cart_button size: ',cart_button.size)
+        print('cart_button name: ',cart_button.tag_name)
+    print('Number of elements ', len(product_names))
+def close_browser(driver):
+    time.sleep(5)
+    driver.quit()
+def webelement_metods(driver):
+    driver=webdriver.Chrome
+    driver.get('http://automationpractice.com')
+    #Enter 'Andrew'in search box then enter 'dress'
+    search_box = driver.find_element(By.XPATH,"//input[@id='search_query_top']")
+    search_box.send_keys('Andrew')
+    time.sleep(3)
+    search_box.clear()
+    search_box.send_keys('dress')
+    time.sleep(3)
+    #Click search button
+    compare_button = driver.find_element(By.XPATH,"//header/div[3]/div[1]/div[1]/div[2]/form[1]/button[1]")
+    time.sleep(1)
+    compare_button.click()
+    #verify compare button is displate
+    print("compare_button.is_displayed()", compare_button.is_displayed())
 
-time.sleep(3)
-driver.quit()
+    #verify compare button is not enabled
+    print("compare_button.is_displayed()", compare_button.is_enabled())
+
+    #get attribute 'action' of compare
+    print("Attribute of compare form", compare_button.get_attribute())
