@@ -24,7 +24,7 @@ def close_browser(driver):
     time.sleep(5)
     driver.quit()
 def webelement_metods(driver):
-    driver=webdriver.Chrome
+    #driver=webdriver.Chrome
     driver.get('http://automationpractice.com')
     #Enter 'Andrew'in search box then enter 'dress'
     search_box = driver.find_element(By.XPATH,"//input[@id='search_query_top']")
@@ -36,12 +36,31 @@ def webelement_metods(driver):
     #Click search button
     compare_button = driver.find_element(By.XPATH,"//header/div[3]/div[1]/div[1]/div[2]/form[1]/button[1]")
     time.sleep(1)
-    compare_button.click()
     #verify compare button is displate
     print("compare_button.is_displayed()", compare_button.is_displayed())
 
     #verify compare button is not enabled
-    print("compare_button.is_displayed()", compare_button.is_enabled())
+    print("compare_button.is_enabled()", compare_button.is_enabled())
 
     #get attribute 'action' of compare
-    print("Attribute of compare form", compare_button.get_attribute())
+    print("Attribute of compare form", compare_button.get_attribute('action'))
+
+def working_with_alerts(driver):
+    driver.get('https://demoqa.com/alerts')
+    time.sleep(2)
+    driver.find_element(By.XPATH, "//button[@id='alertButton']").click()
+    alrt = driver.switch_to.alert
+    time.sleep(2)
+    alrt.accept()  # clicking Ok BUtton
+    driver.find_element(By.XPATH, "//button[@id='confirmButton']").click()
+    alrt = driver.switch_to.alert
+    time.sleep(2)
+    alrt.dismiss()
+    driver.find_element(By.XPATH, "//button[@id='promtButton']").click()
+    alrt = driver.switch_to.alert
+    alrt.send_keys("Hello world")
+    time.sleep(3)
+    alrt.accept()
+    print('driver name: ', driver.name)
+    print('Drive title: ', driver.title)
+    driver.close()
