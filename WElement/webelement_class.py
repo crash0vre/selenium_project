@@ -1,7 +1,11 @@
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
+
 def initialize_driver():
     driver = webdriver.Chrome()
     #driver.maximize_window()
@@ -21,7 +25,7 @@ def webelement_properties(driver):
         print('cart_button name: ',cart_button.tag_name)
     print('Number of elements ', len(product_names))
 def close_browser(driver):
-    time.sleep(5)
+    time.sleep(7)
     driver.quit()
 def webelement_metods(driver):
     #driver=webdriver.Chrome
@@ -64,3 +68,61 @@ def working_with_alerts(driver):
     print('driver name: ', driver.name)
     print('Drive title: ', driver.title)
     driver.close()
+
+def test_explicit_way(driver):
+    driver= webdriver.Chrome()
+    wdwait = WebDriverWait(driver, 20)  # step 1
+    print('<<<Text explisit wait>>>')
+    print("oprning website")
+    driver.get('https://chercher.tech/practice/explicit-wait-sample-selenium-webdriver')
+    print('get initial text')
+    #original_msg=driver.find_element(By.ID,'h2').text #option 1
+    original_msg= wdwait.until(EC.presence_of_element_located((By.ID,"h2"))).text #option 2
+    print(f'Original message displayed: {original_msg}')
+
+    print('Click on "Change text to ... " button')
+    driver.find_element(By.ID,"populate-text").click()
+
+    print("Wait ubtil text is present 'Selenium Webdriver' maxx wait time is 20")
+
+    wdwait.until(EC.text_to_be_present_in_element((By.ID,'h2'),'Selenium')) #step 2
+    target_msg = driver.find_element(By.ID, 'h2').text
+    print(f"Target text: {target_msg}")
+
+    print("<<<Wait untill second button to be enabled for clicking>>>")
+    print(f"Checking the button: {driver.find_element(By.ID, 'disable').is_enabled()}")
+    if not driver.find_element(By.ID, 'disable').is_enabled():
+        driver.find_element(By.ID, "enable-button").click()
+    wdwait.until(EC.element_to_be_clickable((By.ID,"disable")))
+    driver.find_element(By.ID, 'disable').click()
+    print("Element is clickable after 10 sec")
+
+
+def test_drag_and_drop(driver):
+    #driver=webdriver.Chrome()
+    driver.implicitly_wait(20)
+    wdwait=WebDriverWait(driver,10)
+
+#1. Open site
+    print('Open website')
+    url='https://jqueryui.com/droppable/'
+    driver.get(url)
+    wdwait.until(EC.presence_of_element_located((By.ID, "content")))
+#2.Find draggable element
+    driver.switch_to.frame(0)
+    element1=driver.find_element(By.ID,"draggable")
+    print('Element found',{element1.text})
+#3.Find droppble box where we need to drop first element
+    #element2=driver.find_element(By.ID,'droppable') #optinon 1
+    element2=wdwait.until(EC.presence_of_element_located((By.ID,"droppable"))) #option 2
+    print('Second element found',{element2.text})
+
+#4.Perfom drag and drop action
+    action=ActionChains(driver)
+    action.drag_and_drop(element1,element2).perform()
+    assert 'Dropped' in element2.text, "Drag and drop action are failed"
+#5.Check the text after the action
+    print(f"Text in target element: {element2.text}")
+
+def test_hover_over_action(driver):
+    pass

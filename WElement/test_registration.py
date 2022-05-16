@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+from selenium.webdriver.support.select import Select
+
 
 driver = webdriver.Chrome()
 driver.implicitly_wait(20)
@@ -31,7 +33,7 @@ print("Creating castomer info")
 assert mr_title.is_selected(),"Mr was not selected"
 
 driver.find_element(By.ID,"customer_firstname").send_keys(first_name)
-time.sleep(4)
+time.sleep(2)
 #ad_firstname = driver.find_element(By.XPATH,"//input[@id='customer_firstname']").text
 #assert ad_firstname.strip() == first_name
 print('First name',first_name, "created")
@@ -42,26 +44,47 @@ driver.find_element(By.XPATH,"//input[@id='customer_lastname']").send_keys(last_
 print('Last name',last_name,'created')
 driver.find_element(By.XPATH,"//input[@id='passwd']").send_keys(password)
 time.sleep(2)
-print("select Day '07' ")
 
-print("select mouth 'October'")
+print("select Day '07' ")
+day_list=driver.find_element(By.ID,'days')
+selection=Select(day_list)
+selection.select_by_index('7')
+
+print("select month 'October'")
+m_list=driver.find_element(By.XPATH,"//select[@id='months']")
+selection=Select(m_list)
+selection.select_by_index('10')
 
 print ("Select year '1985'")
+y_list=driver.find_element(By.XPATH,"//select[@id='years']")
+selection=Select(y_list)
+selection.select_by_value('1985')
+
+print("Check Sign up for our newsletter! ")
+driver.find_element(By.ID,"newsletter").click()
 
 driver.find_element(By.XPATH,"//input[@id='address1']").send_keys(adress)
 print('Adress',adress,'created')
 driver.find_element(By.XPATH,"//input[@id='city']").send_keys(city)
 print('City',city,'created')
 time.sleep(3)
+print("Select state: first from the list")
+selection = Select(driver.find_element(By.ID,"id_state"))
+selection.select_by_index(1)
 driver.find_element(By.XPATH,"//input[@id='postcode']").send_keys(zip)
 print('Zip',zip,'created')
+
+print('Select country: first from the list')
+selection=Select(driver.find_element(By.ID,"id_country"))
+selection.select_by_index(1)
 driver.find_element(By.XPATH,"//input[@id='phone_mobile']").send_keys(phone_number)
 print('Phone number',phone_number,'created')
-driver.find_element(By.ID,'alias').send_keys('Primary')
+primary=driver.find_element(By.ID,'alias')
+primary.clear()
+primary.send_keys('Primary')
 print('Assign an address alias for future reference CREATED')
-
-
-assert 'authentication' in driver.current_url, 'Autotification page verifiend'
+assert 'authentication' in driver.current_url, 'Autotification page not verifiend'
+driver.find_element(By.XPATH,"//span[normalize-space()='Register']").click()
 
 
 
@@ -69,7 +92,7 @@ assert 'authentication' in driver.current_url, 'Autotification page verifiend'
 
 print("Closing website")
 time.sleep(2)
-driver.quit()
+#driver.quit()
 
 
 
