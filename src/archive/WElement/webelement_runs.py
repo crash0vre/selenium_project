@@ -1,4 +1,3 @@
-from WElement.webelement_class import *
 driver= initialize_driver()
 #webelement_metods(driver)
 driver.implicitly_wait(20)
