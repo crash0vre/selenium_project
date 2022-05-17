@@ -125,4 +125,19 @@ def test_drag_and_drop(driver):
     print(f"Text in target element: {element2.text}")
 
 def test_hover_over_action(driver):
-    pass
+    #driver=webdriver.Chrome
+    wdwait=WebDriverWait(driver,10)
+    print("Open the website")
+    url='http://automationpractice.com'
+    driver.get(url)
+
+
+    print("Finde the product element")
+    element1=wdwait.until(EC.presence_of_element_located((By.XPATH,"//ul[@id='homefeatured']/li[1]")))
+    action = ActionChains(driver)
+    action.move_to_element(element1).perform()
+    element2=wdwait.until(EC.element_to_be_clickable((By.XPATH,"//span[text()='Add to cart']")))
+    element2.click()
+    print("Hover(navesti) over the picture")
+
+    print('Click on Add to Cart')
