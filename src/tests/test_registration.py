@@ -1,9 +1,9 @@
+from src.pages.base_page import *
 from src.steps.registration_steps import *
 from src.utilities import *
 
 #Var
 data=load_yaml_file(f"../../data/config.yml")
-url=data['url']
 first_name=data['first_name']
 last_name=data['last_name']
 password=data['password']
@@ -11,6 +11,7 @@ adress=data['adress']
 city=data['city']
 phone_number=data['phone_number']
 email=f"user{get_timestamp()}@ail.com"
+url=data['url']
 
 #Scenario
 print("Test case steps")
