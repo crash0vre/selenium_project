@@ -7,10 +7,10 @@ from selenium.webdriver.support.select import Select
 def initialize_browser(browser):
     print(f'Init{browser} driver')
     driver=object
-    if browser=="chrome":
+    if browser == "chrome":
         driver = webdriver.Chrome()
-    if browser=="firefox":
-        driver=webdriver.Firefox()
+    if browser =="firefox":
+        driver = webdriver.Firefox()
     driver.implicitly_wait(15)
 
     return driver
@@ -24,28 +24,25 @@ def open_registration_form(driver,email):
     driver.find_element(By.PARTIAL_LINK_TEXT, 'Sign in').click()
     email_adress = driver.find_element(By.XPATH, "//input[@id='email_create']")
     email_adress.send_keys(email)
+    time.sleep(3)
     driver.find_element(By.XPATH,
                         "//body[1]/div[1]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/form[1]/div[1]/div[3]/button[1]/span[1]").click()
     time.sleep(5)
     assert 'account-creation' in driver.current_url, "account creation page failed"
-    print('Account email', email)
+    print('\nAccount email', email)
 
 def complete_registration_form(driver,phone_number,city,first_name,last_name,password,adress):
     # <<<gender_check>>>
     mr_title = driver.find_element(By.ID, 'id_gender1')
     mr_title.click()
-    print("Creating castomer info")
+    print("\nCreating castomer info")
     assert mr_title.is_selected(), "Mr was not selected"
 
     driver.find_element(By.ID, "customer_firstname").send_keys(first_name)
     time.sleep(2)
-    # ad_firstname = driver.find_element(By.XPATH,"//input[@id='customer_firstname']").text
-    # assert ad_firstname.strip() == first_name
     print('First name', first_name, "created")
 
     driver.find_element(By.XPATH, "//input[@id='customer_lastname']").send_keys(last_name)
-    # ad_lastname = driver.find_element(By.XPATH,"//input[@id='customer_lastname']").text
-    # assert ad_lastname.strip() == last_name
     print('Last name', last_name, 'created')
     driver.find_element(By.XPATH, "//input[@id='passwd']").send_keys(password)
     time.sleep(2)

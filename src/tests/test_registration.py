@@ -9,6 +9,7 @@ last_name=data['last_name']
 password=data['password']
 adress=data['adress']
 city=data['city']
+zip=data['zip']
 phone_number=data['phone_number']
 email=f"user{get_timestamp()}@ail.com"
 
